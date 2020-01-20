@@ -1,56 +1,31 @@
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 
-@RunWith(Parameterized.class)
-public class OpenOtusPage {
-
+public class OpenOtusPage{
     private static final Logger logger = LogManager.getLogger(OpenOtusPage.class);
+    WebDriver wd = Browsers.CHROME.create();
 
-    private WebDriver driver;
-
-    @Parameter
-    public Class<? extends WebDriver> driverClass;
-
-    @Parameters(name = "{index}: {0}")
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { ChromeDriver.class },
-                { FirefoxDriver.class } });
-    }
-
-    @Before
-    public void setupTest() throws Exception {
-        WebDriverManager.getInstance(driverClass).setup();
-        driver = driverClass.newInstance();
+    @BeforeClass
+    public static void setUpClass() {
+        WebDriverManager.chromedriver().setup();
+        WebDriverManager.firefoxdriver().setup();
     }
 
     @After
-    public void teardown() {
-        if (driver != null) {
-            driver.quit();
+    public void tearDown() {
+        if (wd != null) {
+            wd.quit();
         }
     }
 
     @Test
     public void test() {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        driver.get("https://otus.ru/");
+        wd.get("https://otus.ru");
     }
 }
