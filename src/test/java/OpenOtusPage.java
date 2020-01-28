@@ -8,8 +8,10 @@ import org.openqa.selenium.WebDriver;
 
 
 public class OpenOtusPage{
+    public static String browser = System.getProperty("browser").toUpperCase();
     private static final Logger logger = LogManager.getLogger(OpenOtusPage.class);
-    WebDriver wd = Browsers.CHROME.create();
+
+    WebDriver wd = Browsers.valueOf(browser).create();
 
     @BeforeClass
     public static void setUpClass() {
